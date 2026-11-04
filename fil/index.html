@@ -15,7 +15,7 @@
     <div class="top-actions"><a class="language-link" href="../">English</a><a class="top-action" href="#first-ten-minutes">Magsimula</a><a class="pdf-action" href="trikeserve-user-manual-fil.pdf" download>I-download ang PDF</a></div>
   </header>
   <nav class="mobile-nav" aria-label="Mabilisang nabigasyon">
-    <a href="#first-ten-minutes">Unang 10 minuto</a><a href="#account-guide">Aling account?</a><a href="#sign-in">Mag-sign up</a><a href="#customer">Customer</a><a href="#rider">Driver</a><a href="#business">Negosyo</a><a href="#admin">Admin</a><a href="#troubleshooting">Tulong</a>
+    <a href="#first-ten-minutes">Unang 10 minuto</a><a href="#account-guide">Aling account?</a><a href="#quick-start">Mga pangunahing hakbang</a><a href="#sign-in">Mag-sign up</a><a href="#customer">Customer</a><a href="#rider">Driver</a><a href="#business">Negosyo</a><a href="#admin">Admin</a><a href="#troubleshooting">Tulong</a>
   </nav>
   <div class="shell" id="top">
     <aside class="sidebar" aria-label="Mga bahagi ng gabay">
@@ -263,11 +263,15 @@
   <script>
     document.querySelector('.hero-card')?.classList.add('hero-card-arrive');
     const revealObserver=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('is-revealed');revealObserver.unobserve(entry.target)}}),{threshold:.08});
-    document.querySelectorAll('.doc-section,.role-card,.decision-card').forEach(element=>{element.classList.add('scroll-reveal');revealObserver.observe(element)});
+    const reducedMotion=matchMedia('(prefers-reduced-motion: reduce)');
+    if(!reducedMotion.matches&&'IntersectionObserver' in window){document.querySelectorAll('.doc-section,.role-card,.decision-card').forEach(element=>{element.classList.add('scroll-reveal');revealObserver.observe(element)})}else{document.querySelectorAll('.doc-section,.role-card,.decision-card').forEach(element=>element.classList.add('is-revealed'))}
     const progress=document.querySelector('.reading-progress');let progressTicking=false;
     const updateProgress=()=>{const scrollable=document.documentElement.scrollHeight-window.innerHeight;const value=scrollable>0?Math.min(100,Math.max(0,window.scrollY/scrollable*100)):0;progress.style.setProperty('--progress',`${value}%`);progress.setAttribute('aria-valuenow',String(Math.round(value)));progressTicking=false};
     window.addEventListener('scroll',()=>{if(!progressTicking){progressTicking=true;requestAnimationFrame(updateProgress)}},{passive:true});window.addEventListener('resize',updateProgress,{passive:true});updateProgress();
     const sections=[...document.querySelectorAll('main section[id]')];
+    const navLinks=[...document.querySelectorAll('.sidebar a[href^="#"], .mobile-nav a[href^="#"]')];
+    const navObserver=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting)navLinks.forEach(link=>link.classList.toggle('active',link.hash===`#${entry.target.id}`))}),{rootMargin:'-18% 0px -70% 0px'});
+    sections.forEach(section=>navObserver.observe(section));
     const toc=document.querySelector('.pdf-toc ol');
     sections.forEach(section=>{const heading=section.querySelector('h2');if(!heading)return;const item=document.createElement('li');const link=document.createElement('a');link.href=`#${section.id}`;link.textContent=heading.textContent.trim();item.append(link);toc.append(item)});
     document.querySelectorAll('figure.shot').forEach((figure,index)=>{const caption=figure.querySelector('figcaption');if(!caption)return;const number=document.createElement('span');number.className='shot-number';number.textContent=`Screenshot ${String(index+1).padStart(2,'0')}`;caption.prepend(number)});

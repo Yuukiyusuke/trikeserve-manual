@@ -15,14 +15,14 @@
     <div class="top-actions"><a class="language-link" href="fil/index.html">Filipino</a><a class="top-action" href="#first-ten-minutes">First 10 minutes <svg class="inline-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></a><a class="pdf-action" href="trikeserve-user-manual.pdf" download>Download PDF</a></div>
   </header>
   <nav class="mobile-nav" aria-label="Quick navigation">
-    <a href="#first-ten-minutes">First 10 min</a><a href="#account-guide">Which account?</a><a href="#accounts">Accounts</a><a href="#sign-in">Sign in</a><a href="#customer">Customer</a><a href="#rider">Driver</a><a href="#business">Business</a><a href="#admin">Admin</a><a href="#troubleshooting">Help</a><a href="#support">Support</a>
+    <a href="#first-ten-minutes">First 10 min</a><a href="#account-guide">Which account?</a><a href="#quick-start">Quick start</a><a href="#accounts">Accounts</a><a href="#sign-in">Sign in</a><a href="#customer">Customer</a><a href="#rider">Driver</a><a href="#business">Business</a><a href="#admin">Admin</a><a href="#troubleshooting">Help</a><a href="#support">Support</a>
   </nav>
   <div class="shell" id="top">
     <aside class="sidebar" aria-label="Manual contents">
       <div class="nav-title">GETTING STARTED</div>
       <a href="#first-ten-minutes"><span class="nav-dot"></span>First 10 minutes</a>
-      <a href="#quick-start"><span class="nav-dot"></span>Quick start</a>
       <a href="#account-guide"><span class="nav-dot"></span>Which account?</a>
+      <a href="#quick-start"><span class="nav-dot"></span>Quick start</a>
       <a href="#accounts"><span class="nav-dot"></span>Choose your account</a>
       <a href="#sign-in"><span class="nav-dot"></span>Sign in &amp; sign up</a>
       <div class="nav-title">YOUR TRIKESERVE</div>
@@ -346,10 +346,15 @@
         revealObserver.unobserve(entry.target);
       }
     }), { threshold: 0.08 });
-    document.querySelectorAll('.doc-section, .role-card, .decision-card').forEach(element => {
-      element.classList.add('scroll-reveal');
-      revealObserver.observe(element);
-    });
+    const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+    if (!reducedMotion.matches && 'IntersectionObserver' in window) {
+      document.querySelectorAll('.doc-section, .role-card, .decision-card').forEach(element => {
+        element.classList.add('scroll-reveal');
+        revealObserver.observe(element);
+      });
+    } else {
+      document.querySelectorAll('.doc-section, .role-card, .decision-card').forEach(element => element.classList.add('is-revealed'));
+    }
 
     const progress = document.querySelector('.reading-progress');
     let progressTicking = false;
