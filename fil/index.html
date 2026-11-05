@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Gabay sa paggamit ng TrikeServe para sa biyahe, pagkain, drayber, negosyo, at tagapangasiwa.">
+  <script>try{const saved=localStorage.getItem('trikeserve_manual_theme');document.documentElement.classList.toggle('dark',saved?saved==='dark':matchMedia('(prefers-color-scheme: dark)').matches)}catch{}</script>
   <title>TrikeServe · Gabay sa Gumagamit</title>
   <link rel="stylesheet" href="../assets/manual.css">
 </head>
@@ -12,7 +13,7 @@
   <a class="skip-link" href="#main-content">Lumaktaw sa nilalaman</a>
   <header class="topbar">
     <a class="brand" href="#top"><img src="../assets/trikeserve-logo.jpg" alt="TrikeServe"><span>GABAY SA GUMAGAMIT</span></a>
-    <div class="top-actions"><a class="language-link" href="../">English</a><a class="top-action" href="#first-ten-minutes">Magsimula</a><a class="pdf-action" href="trikeserve-user-manual-fil.pdf" download>I-download ang PDF</a></div>
+    <div class="top-actions"><a class="language-link" href="../">English</a><button class="theme-toggle" type="button" aria-label="Lumipat sa dark mode" aria-pressed="false"><svg class="theme-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/></svg><span>Madilim na mode</span></button><a class="top-action" href="#first-ten-minutes">Magsimula</a><a class="pdf-action" href="trikeserve-user-manual-fil.pdf" download>I-download ang PDF</a></div>
   </header>
   <nav class="mobile-nav" aria-label="Mabilisang nabigasyon">
     <a href="#first-ten-minutes">Unang 10 minuto</a><a href="#account-guide">Aling account?</a><a href="#quick-start">Mga pangunahing hakbang</a><a href="#sign-in">Mag-sign up</a><a href="#customer">Customer</a><a href="#rider">Driver</a><a href="#business">Negosyo</a><a href="#admin">Admin</a><a href="#troubleshooting">Tulong</a>
@@ -261,6 +262,20 @@
   </div>
   <a class="backtop" href="#top" aria-label="Bumalik sa itaas"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 19V5m-7 7 7-7 7 7"/></svg></a>
   <script>
+    const themeToggle = document.querySelector('.theme-toggle');
+    const applyManualTheme = dark => {
+      document.documentElement.classList.toggle('dark', dark);
+      themeToggle.setAttribute('aria-pressed', String(dark));
+      themeToggle.setAttribute('aria-label', `Lumipat sa ${dark ? 'light' : 'dark'} mode`);
+      themeToggle.querySelector('span').textContent = dark ? 'Maliwanag na mode' : 'Madilim na mode';
+    };
+    applyManualTheme(document.documentElement.classList.contains('dark'));
+    themeToggle.addEventListener('click', () => {
+      const dark = !document.documentElement.classList.contains('dark');
+      try { localStorage.setItem('trikeserve_manual_theme', dark ? 'dark' : 'light'); } catch {}
+      applyManualTheme(dark);
+    });
+
     document.querySelector('.hero-card')?.classList.add('hero-card-arrive');
     const revealObserver=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('is-revealed');revealObserver.unobserve(entry.target)}}),{threshold:.08});
     const reducedMotion=matchMedia('(prefers-reduced-motion: reduce)');

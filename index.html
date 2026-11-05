@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="A friendly, illustrated guide to using TrikeServe for rides, food orders, driving, business management, and platform administration.">
+  <script>try{const saved=localStorage.getItem('trikeserve_manual_theme');document.documentElement.classList.toggle('dark',saved?saved==='dark':matchMedia('(prefers-color-scheme: dark)').matches)}catch{}</script>
   <title>TrikeServe · User Guide</title>
   <link rel="stylesheet" href="assets/manual.css">
 </head>
@@ -12,7 +13,7 @@
   <a class="skip-link" href="#main-content">Skip to guide content</a>
   <header class="topbar">
     <a class="brand" href="#top"><img src="assets/trikeserve-logo.jpg" alt="TrikeServe"><span>USER GUIDE</span></a>
-    <div class="top-actions"><a class="language-link" href="fil/index.html">Filipino</a><a class="top-action" href="#first-ten-minutes">First 10 minutes <svg class="inline-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></a><a class="pdf-action" href="trikeserve-user-manual.pdf" download>Download PDF</a></div>
+    <div class="top-actions"><a class="language-link" href="fil/index.html">Filipino</a><button class="theme-toggle" type="button" aria-label="Switch to dark mode" aria-pressed="false"><svg class="theme-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/></svg><span>Dark mode</span></button><a class="top-action" href="#first-ten-minutes">First 10 minutes <svg class="inline-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></a><a class="pdf-action" href="trikeserve-user-manual.pdf" download>Download PDF</a></div>
   </header>
   <nav class="mobile-nav" aria-label="Quick navigation">
     <a href="#first-ten-minutes">First 10 min</a><a href="#account-guide">Which account?</a><a href="#quick-start">Quick start</a><a href="#accounts">Accounts</a><a href="#sign-in">Sign in</a><a href="#customer">Customer</a><a href="#rider">Driver</a><a href="#business">Business</a><a href="#admin">Admin</a><a href="#troubleshooting">Help</a><a href="#support">Support</a>
@@ -337,6 +338,20 @@
   </div>
   <a class="backtop" href="#top" aria-label="Back to top"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 19V5m-7 7 7-7 7 7"/></svg></a>
   <script>
+    const themeToggle = document.querySelector('.theme-toggle');
+    const applyManualTheme = dark => {
+      document.documentElement.classList.toggle('dark', dark);
+      themeToggle.setAttribute('aria-pressed', String(dark));
+      themeToggle.setAttribute('aria-label', `Switch to ${dark ? 'light' : 'dark'} mode`);
+      themeToggle.querySelector('span').textContent = dark ? 'Light mode' : 'Dark mode';
+    };
+    applyManualTheme(document.documentElement.classList.contains('dark'));
+    themeToggle.addEventListener('click', () => {
+      const dark = !document.documentElement.classList.contains('dark');
+      try { localStorage.setItem('trikeserve_manual_theme', dark ? 'dark' : 'light'); } catch {}
+      applyManualTheme(dark);
+    });
+
     document.querySelector('.hero-card')?.classList.add('hero-card-arrive');
 
     const revealObserver = new IntersectionObserver(entries => entries.forEach(entry => {
